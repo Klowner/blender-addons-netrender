@@ -1,4 +1,4 @@
-# blener-addons-netrender
+# blender-addons-netrender
 this clone original blender netrender with
 
 * fixed bug: slave still  render image when on master has been canceled.
