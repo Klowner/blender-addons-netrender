@@ -5,4 +5,3 @@ this clone original blender netrender with
 * Added ability to select the output file format (default all rendered images are saved in OpenEXR format)
  
 
-There are bugs in client.py!!! but to me it is not critical
