@@ -380,12 +380,16 @@ def render_slave(engine, netsettings, threads):
 
                                 if thumbname:
                                     f = open(thumbname, 'rb')
+                                    headers['content-length'] = f.seek(0, 2)
+                                    f.seek(0, 0)
                                     with ConnectionContext():
                                         conn.request("PUT", "/thumb", f, headers=headers)
                                     f.close()
                                     responseStatus(conn)
 
                             f = open(filename, 'rb')
+                            headers['content-length'] = f.seek(0, 2)
+                            f.seek(0, 0)
                             with ConnectionContext():
                                 conn.request("PUT", "/render", f, headers=headers)
                             f.close()
@@ -403,6 +407,8 @@ def render_slave(engine, netsettings, threads):
                                 headers["job-finished"] = str(result_filepath == frame_results[-1])
 
                                 f = open(result_filepath, 'rb')
+                                headers['content-length'] = f.seek(0, 2)
+                                f.seek(0, 0)
                                 with ConnectionContext():
                                     conn.request("PUT", "/result", f, headers=headers)
                                 f.close()

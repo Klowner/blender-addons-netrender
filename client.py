@@ -15,7 +15,6 @@
 #  Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 #
 # ##### END GPL LICENSE BLOCK #####
-
 import bpy
 import os, re
 import http, http.client, http.server
@@ -249,8 +248,12 @@ def sendJobBaking(conn, scene, can_save = True):
     if response.status == http.client.ACCEPTED:
         for rfile in job.files:
             f = open(rfile.filepath, "rb")
+            headers = {
+                'content-length': f.seek(0, 2),
+            }
+            f.seek(0, 0)
             with ConnectionContext():
-                conn.request("PUT", fileURL(job_id, rfile.index), f)
+                conn.request("PUT", fileURL(job_id, rfile.index), f, headers, encode_chunked=False)
             f.close()
             response = conn.getresponse()
             response.read()
@@ -339,8 +342,12 @@ def sendJobBlender(conn, scene, anim = False, can_save = True):
     if response.status == http.client.ACCEPTED:
         for rfile in job.files:
             f = open(rfile.filepath, "rb")
+            headers = {
+                'content-length': f.seek(0, 2),
+            }
+            f.seek(0, 0)
             with ConnectionContext():
-                conn.request("PUT", fileURL(job_id, rfile.index), f)
+                conn.request("PUT", fileURL(job_id, rfile.index), f, headers, encode_chunked=False)
             f.close()
             response = conn.getresponse()
             response.read()
